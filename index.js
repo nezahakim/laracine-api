@@ -1,7 +1,6 @@
 import express, { json, urlencoded } from "express";
 import cors from "cors";
 import multer from "multer";
-import dotenv from 'dotenv';
 import { db } from "./config.js";
 
 import { join, dirname } from 'path';
@@ -9,7 +8,6 @@ import { fileURLToPath } from 'url';
 
 const App = express();
 
-dotenv.config();
 App.use(express.json());
 App.use(cors());
 App.use(urlencoded({ extended: true }));
@@ -764,7 +762,7 @@ const __dirname = dirname(__filename);
 App.use('/reports/view', express.static(join(__dirname, './Data/reports')));
 
 
-const PORT = process.env.PORT
+const PORT = 3604
 App.listen(8000, () => {
   console.log("Connected to Server! at MYSQL PORT: "+ PORT );
 });
