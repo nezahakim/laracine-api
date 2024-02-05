@@ -1,31 +1,22 @@
 import express, { json, urlencoded } from "express";
-import mysql from 'mysql';
 import cors from "cors";
+import multer from "multer";
 
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import multer from "multer";
 
 import dotenv from 'dotenv';
 dotenv.config();
 
-export const db = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
-});
+import {db} from './config.js'
 
 
 const App = express();
 
 
-
-
 App.use(express.json());
 App.use(cors());
 App.use(urlencoded({ extended: true }));
-
 
 
 
@@ -116,9 +107,7 @@ App.get("/homeworks/:id", (req, res) => {
     `SELECT * FROM homeworks 
                 INNER JOIN users ON homeworks.author = users.id            
                 INNER JOIN teachers ON homeworks.author = teachers.user_id 
-                WHERE homeworks.id='` +
-    id +
-    `';`;
+                WHERE homeworks.id='${id}'; `;
 
   db.query(sql, (err, data) => {
     if (err) return console.log(err);
