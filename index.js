@@ -689,7 +689,7 @@ App.post("/login", (req, res) => {
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    return cb(null, './Data/reports');
+    return cb(null, 'http://laracine.unaux.com/Data/reports');
   },
   filename: function (req, file, cb) {
     return cb(null,`${Date.now()}_${ file.originalname}`);
