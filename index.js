@@ -1,8 +1,8 @@
 import express, { json, urlencoded } from "express";
-import { db } from "./config.js";
 import cors from "cors";
 import multer from "multer";
 import dotenv from 'dotenv';
+import { db } from "./config.js";
 
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
