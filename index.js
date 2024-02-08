@@ -1,5 +1,6 @@
-import express, { json, urlencoded } from "express";
+import express, { urlencoded } from "express";
 import cors from "cors";
+import mysql from 'mysql';
 import multer from "multer";
 
 import { join, dirname } from 'path';
@@ -8,7 +9,13 @@ import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 dotenv.config();
 
-import {db} from './config.js'
+export const db = mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
+});
+
 
 
 const App = express();
@@ -17,8 +24,6 @@ const App = express();
 App.use(express.json());
 App.use(cors());
 App.use(urlencoded({ extended: true }));
-
-
 
 
 App.get("/config", (req, res) => {
