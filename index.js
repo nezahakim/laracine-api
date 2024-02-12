@@ -1,7 +1,7 @@
 import express, { urlencoded } from "express";
 import cors from "cors";
 import mysql from 'mysql';
-import multer from "multer";
+// import multer from "multer";
 
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -692,69 +692,69 @@ App.post("/login", (req, res) => {
   }
 });
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    return cb(null, 'http://laracine.unaux.com/Data/reports');
-  },
-  filename: function (req, file, cb) {
-    return cb(null,`${Date.now()}_${ file.originalname}`);
-  }
-});
-const upload = multer({ storage });
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     return cb(null, 'http://laracine.unaux.com/Data/reports');
+//   },
+//   filename: function (req, file, cb) {
+//     return cb(null,`${Date.now()}_${ file.originalname}`);
+//   }
+// });
+// const upload = multer({ storage });
 
-App.post('/reports/add', upload.single('file'), (req, res) => {
-  const dt = new Date();
-  const join_date = `${dt.getMonth() + 1}-${dt.getDate()}-${dt.getFullYear()}`;
+// App.post('/reports/add', upload.single('file'), (req, res) => {
+//   const dt = new Date();
+//   const join_date = `${dt.getMonth() + 1}-${dt.getDate()}-${dt.getFullYear()}`;
 
-  const file = req.file;
-  const term = req.body.term;
-  const grade_level = req.body.grade_level;
-  const year = req.body.year;
-  const student_id = req.body.student_id;
+//   const file = req.file;
+//   const term = req.body.term;
+//   const grade_level = req.body.grade_level;
+//   const year = req.body.year;
+//   const student_id = req.body.student_id;
 
-  if (term && year && grade_level) {
-    if (!req.file) {
+//   if (term && year && grade_level) {
+//     if (!req.file) {
 
-      console.log('No file uploaded.');
-      return res.json({ message: 'No file uploaded.' });
+//       console.log('No file uploaded.');
+//       return res.json({ message: 'No file uploaded.' });
 
-    }else{
+//     }else{
 
-    const sql = `SELECT * FROM reports INNER JOIN students ON reports.student_id = students.student_id WHERE reports.student_id = ${student_id} AND reports.year = ${year}`;
-    db.query(sql, (err, datai) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({ status: 'error', message: 'Internal Server Error' });
-      }
+//     const sql = `SELECT * FROM reports INNER JOIN students ON reports.student_id = students.student_id WHERE reports.student_id = ${student_id} AND reports.year = ${year}`;
+//     db.query(sql, (err, datai) => {
+//       if (err) {
+//         console.error(err);
+//         return res.status(500).json({ status: 'error', message: 'Internal Server Error' });
+//       }
 
-      if (datai && datai.length > 0) {
-        const updateSql = `UPDATE reports SET ${term}='${file.filename}', year='${year}' WHERE student_id = ${student_id}`;
-        db.query(updateSql, (err, data) => {
-          if (err) {
-            console.error(err);
-            return res.json({ status: 'error', message: 'Error updating report' });
-          }
-          return res.json({ status: 'success', message: 'row updated' });
-        });
-      } else {
-        const insertSql = `INSERT INTO reports(student_id, ${term}, grade_level, year) VALUES ('${student_id}', '${file.filename}', '${grade_level}', '${year}')`;
-        db.query(insertSql, (err, data) => {
-          if (err) {
-            console.error(err);
-            return res.status(500).json({ status: 'error', message: 'Error inserting report' });
-          }
-          return res.json({ status: 'success', message: 'row added' });
-        });
-      }
-    });
+//       if (datai && datai.length > 0) {
+//         const updateSql = `UPDATE reports SET ${term}='${file.filename}', year='${year}' WHERE student_id = ${student_id}`;
+//         db.query(updateSql, (err, data) => {
+//           if (err) {
+//             console.error(err);
+//             return res.json({ status: 'error', message: 'Error updating report' });
+//           }
+//           return res.json({ status: 'success', message: 'row updated' });
+//         });
+//       } else {
+//         const insertSql = `INSERT INTO reports(student_id, ${term}, grade_level, year) VALUES ('${student_id}', '${file.filename}', '${grade_level}', '${year}')`;
+//         db.query(insertSql, (err, data) => {
+//           if (err) {
+//             console.error(err);
+//             return res.status(500).json({ status: 'error', message: 'Error inserting report' });
+//           }
+//           return res.json({ status: 'success', message: 'row added' });
+//         });
+//       }
+//     });
 
-  }
+//   }
 
-  } else {
-    return res.json({ status: 'error', message: 'Please enter term and year' });
-  }
+//   } else {
+//     return res.json({ status: 'error', message: 'Please enter term and year' });
+//   }
 
-});
+// });
 
 App.get('/reports/:id',(req,res)=>{
   const student_id =  req.params.id
@@ -770,7 +770,7 @@ App.get('/reports/:id',(req,res)=>{
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-App.use('/reports/view', express.static(join(__dirname, './Data/reports')));
+App.use('/reports/view', express.static(join(__dirname, 'http://laracine.unaux.com/Data/Reports')));
 
 
 const PORT = process.env.PORT
