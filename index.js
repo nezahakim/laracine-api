@@ -767,6 +767,51 @@ App.get('/reports/:id',(req,res)=>{
 
 })
 
+
+app.get('/activity', (req, res) => {
+  const activities = [];
+  const imagesMap = {};
+
+  const activitySql = `SELECT * FROM activity`;
+  db.query(activitySql, (activityErr, activityData) => {
+      if (activityErr) {
+          console.log(activityErr);
+          res.status(500).json({ error: 'Internal Server Error' });
+      } else {
+          const imageSql = `SELECT activity_id, image FROM images`;
+          db.query(imageSql, (imageErr, imageData) => {
+              if (imageErr) {
+                  console.log(imageErr);
+                  res.status(500).json({ error: 'Internal Server Error' });
+              } else {
+                  // Build a map of activity_id to an array of images
+                  imageData.forEach((image) => {
+                      const activityId = image.activity_id;
+                      if (!imagesMap[activityId]) {
+                          imagesMap[activityId] = [];
+                      }
+                      imagesMap[activityId].push(`https://laracine1.000webhostapp.com/Data/Activity/${image.image}`);
+                  });
+
+                  // Combine activities with their images
+                  activityData.forEach((activity) => {
+                      const activityWithImages = {
+                          title: activity.title,
+                          description: activity.description,
+                          images: imagesMap[activity.id] || [],
+                      };
+                      activities.push(activityWithImages);
+                  });
+
+                  res.json(activities);
+              }
+          });
+      }
+  });
+});
+
+
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
