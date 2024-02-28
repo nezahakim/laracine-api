@@ -776,13 +776,13 @@ app.get('/activity', (req, res) => {
   db.query(activitySql, (activityErr, activityData) => {
       if (activityErr) {
           console.log(activityErr);
-          res.status(500).json({ error: 'Internal Server Error' });
+          // res.status(500).json({ error: 'Internal Server Error' });
       } else {
           const imageSql = `SELECT activity_id, image FROM images`;
           db.query(imageSql, (imageErr, imageData) => {
               if (imageErr) {
                   console.log(imageErr);
-                  res.status(500).json({ error: 'Internal Server Error' });
+                  // res.status(500).json({ error: 'Internal Server Error' });
               } else {
                   // Build a map of activity_id to an array of images
                   imageData.forEach((image) => {
@@ -803,7 +803,7 @@ app.get('/activity', (req, res) => {
                       activities.push(activityWithImages);
                   });
 
-                  res.json(activities);
+                  return res.json(activities);
               }
           });
       }
