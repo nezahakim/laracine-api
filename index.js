@@ -797,7 +797,7 @@ App.get('/activity', (req, res) => {
                   activityData.forEach((activity) => {
                       const activityWithImages = {
                           title: activity.title,
-                          description: activity.description,
+                          description: activity.desc,
                           images: imagesMap[activity.id] || [],
                       };
                       activities.push(activityWithImages);
