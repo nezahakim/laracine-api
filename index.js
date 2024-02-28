@@ -796,6 +796,7 @@ App.get('/activity', (req, res) => {
                   // Combine activities with their images
                   activityData.forEach((activity) => {
                       const activityWithImages = {
+                          title: activity.title,
                           description: activity.desc,
                           images: imagesMap[activity.id] || [],
                       };
