@@ -421,15 +421,21 @@ App.post("/students/update/:id", (req, res) => {
 App.get("/student/delete/:id", (req, res) => {
   var id = req.params.id;
   if (id.length > 0) {
-    var sql = `DELETE FROM students WHERE student_id = ${id}`;
+    var sql = `DELETE FROM reports WHERE student_id = ${id}`;
     db.query(sql, (err, data) => {
       if (err) return console.log(err);
       else {
-        var values = {
-          status: true,
-          data: data,
-        };
-        return res.json(values);
+        var sql = `DELETE FROM students WHERE student_id = ${id}`;
+        db.query(sql, (err, data) => {
+          if (err) return console.log(err);
+          else {
+            var values = {
+              status: true,
+              data: data,
+            };
+            return res.json(values);
+          }
+        });
       }
     });
   } else {
@@ -576,7 +582,7 @@ App.get("/teachers/delete/:id", (req, res) => {
     db.query(sql, (err, data) => {
       if (err) return console.log(err);
       else {
-        var sql = `DELETE FROM users WHERE id = ${id}`;
+        var sql = `UPDATE users SET title = "Not Available" WHERE id = ${id}`;
         db.query(sql, (err, data) => {
           if (err) return console.log(err);
           else {
@@ -797,7 +803,7 @@ App.get('/activity', (req, res) => {
                   activityData.forEach((activity) => {
                       const activityWithImages = {
                           title: activity.title,
-                          description: activity.description,
+                          description: activity.desc,
                           images: imagesMap[activity.id] || [],
                       };
                       activities.push(activityWithImages);
